@@ -1,5 +1,5 @@
 // Ahmad Jaghama 1202450 sec #1
-
+ // removed printf the tree is empty and
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -146,9 +146,6 @@ void printInOrderWithTopics(AVL_T t) {
         printf("%s its topics : %s\n ", t->CourseCode, t->topics);
 
         printInOrderWithTopics(t->Right);
-    }else {
-        printf("\n------------------------------------------------------------------------------------------------");
-        printf("\n\t\t\t <<<< THE TREE IS EMPTY :(  >>>>");
     }
 }
 
@@ -180,9 +177,6 @@ void printCase4(struct AVLnode *root) {
         printf("%s : %d # %s \n %s /%s\n", root->Course, root->hours, root->CourseCode, root->depart, root->topics);
         printf("*********************************");
         printCase4(root->Right);
-    } else {
-        printf("\n------------------------------------------------------------------------------------------------");
-        printf("\n\t\t\t <<<< THE TREE IS EMPTY :(  >>>>");
     }
 }
 
