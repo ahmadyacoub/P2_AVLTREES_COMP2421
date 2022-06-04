@@ -1,5 +1,5 @@
 // Ahmad Jaghama 1202450 sec #1
- // removed printf the tree is empty and
+// removed printf the tree is empty and
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -19,6 +19,7 @@ typedef struct AVLnode {
 } Tree;
 
 AVL_T tempTree;
+
 
 AVL_T minValueNode(AVL_T root) {  // A function that finds the smallest value or the leftmost leaf
     AVL_T temp = root;
@@ -195,7 +196,7 @@ int nodeBalance(AVL_T root) { // function to calculate the balance for a node
     return height(root->Left) - height(root->Right);
 }
 
-struct Node *deleteNode(AVL_T root, char *CourseCode) {
+AVL_T deleteNode(AVL_T root, char *CourseCode) {
 
     AVL_T temp = malloc(sizeof(AVL_T)); // allocating the temp
     if (root == NULL)
@@ -215,12 +216,18 @@ struct Node *deleteNode(AVL_T root, char *CourseCode) {
             if (temp == NULL) {
                 temp = root;
                 root = NULL;
+
             } else //1 child case
                 root = temp; // save child in root
         } else {
-            // 2 child xase
+            // 2 child case
             AVL_T temp = minValueNode(root->Right); // save the smallest value from the left
             strcpy(root->CourseCode, temp->CourseCode);
+            strcpy(root->Course, temp->Course);
+            strcpy(root->depart, temp->depart);
+            strcpy(root->topics, temp->topics);
+            root->hours = temp->hours;
+            // THESE STRCPY WAS DONE TO SAVE TH DATA
             root->Right = deleteNode(root->Right, temp->CourseCode);
         }
     }
@@ -258,17 +265,22 @@ struct Node *deleteNode(AVL_T root, char *CourseCode) {
     return root;
 }
 
-void firstLetterFinder(AVL_T root, char *letter) {
+AVL_T firstLetterFinder(AVL_T root, char *letter) {
     // A Function that traverse over the tree and checks by the first letter of code and given char
     if (root != NULL) {
         firstLetterFinder(root->Left, letter);
-        firstLetterFinder(root->Right, letter);
 
-        if (root->CourseCode[0] == letter[0]) // the condition
+        if (root->CourseCode[0] == letter[0]) { // the condition
             // adding the node to global tree to delete it or save it
+
             tempTree = insert(tempTree, root->Course,
                               root->CourseCode, root->hours, root->depart, root->topics);
+
+            //      firstLetterFinder(root->Left, letter);
+        }
+        firstLetterFinder(root->Right, letter);
     }
+
 }
 
 void departmentFinder(AVL_T root, char *dep) {
@@ -285,11 +297,18 @@ void departmentFinder(AVL_T root, char *dep) {
 }
 
 AVL_T deleteByLetter(AVL_T root) { // a function that deletes the global tree nodes
-    if (tempTree != NULL) {
+
+    while (tempTree != NULL) {
         root = deleteNode(root, tempTree->CourseCode);
+
         tempTree = deleteNode(tempTree, tempTree->CourseCode);
-        deleteByLetter(root); // recursion
     }
+
+//    if (tempTree != NULL) {
+//        root = deleteNode(root, tempTree->CourseCode);
+//        tempTree = deleteNode(tempTree, tempTree->CourseCode);
+//        deleteByLetter(root); // recursion
+//    }
     return root;
 }
 
@@ -605,8 +624,9 @@ int main() {
                 if (len > 0 && code[len - 1] == '\n') {
                     code[len - 1] = '\0';
                 }
-
                 firstLetterFinder(root, code);
+
+
                 root = deleteByLetter(root);
 
                 break;
