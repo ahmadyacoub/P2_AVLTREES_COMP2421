@@ -605,8 +605,8 @@ int main() {
                     break;
 
 
-                } else if ((strcmp(findCourse(root, code)->CourseCode, code)) ==
-                           0) { // func works but cant read it from console good
+                } else if ((strcmp(findCourse(root, code)->CourseCode, code)) == 0) {
+                    // func works but cant read it from console good
                     temp = findCourse(root, code);
                     printf("%s %s %s %d h : %s", temp->Course, temp->CourseCode, temp->depart, temp->hours,
                            temp->topics);
